@@ -15,7 +15,7 @@ library(tidyverse)
 # Load Data
 
 ```{r}
-planet_grids = st_read("../ARTS_planet_basemaps/data/circumpolar_global_basemap_grids.geojson")
+planet_grids = st_read("./data/circumpolar_basemap_grids_2024.geojson")
 ab_region = st_read("../../tundra_and_boreal_domain/tundra_and_boreal.shp") |>
   st_make_valid()
 ```
@@ -29,11 +29,10 @@ ab_planet_grids = planet_grids |>
       str_match("[:digit:]{4}") |>
       as.numeric()
   ) |>
-  filter(year == 2017) |>
   st_filter(
     ab_region
   ) |>
-  select(id)
+  select(id, link)
 ```
 
 ```{r}
@@ -47,7 +46,7 @@ ggplot() +
 ```{r}
 # st_write(
 #   ab_planet_grids,
-#   "./data/arctic_boreal_planet_basemap_grids.geojson"
+#   "./data/arctic_boreal_planet_basemap_grids_2024.geojson"
 # )
 ```
 
