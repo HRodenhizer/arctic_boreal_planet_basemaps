@@ -1,0 +1,53 @@
+---
+title: "Arctic Boreal Basemap Grids"
+author: "Heidi Rodenhizer"
+format: html
+editor: visual
+---
+
+# Load Packages
+
+```{r}
+library(sf)
+library(tidyverse)
+```
+
+# Load Data
+
+```{r}
+planet_grids = st_read("../ARTS_planet_basemaps/data/circumpolar_global_basemap_grids.geojson")
+ab_region = st_read("../../tundra_and_boreal_domain/tundra_and_boreal.shp") |>
+  st_make_valid()
+```
+
+# Filter Planet Grids to Arctic Boreal Region
+
+```{r}
+ab_planet_grids = planet_grids |>
+  mutate(
+    year = name |>
+      str_match("[:digit:]{4}") |>
+      as.numeric()
+  ) |>
+  filter(year == 2017) |>
+  st_filter(
+    ab_region
+  ) |>
+  select(id)
+```
+
+```{r}
+ggplot() +
+  geom_sf(
+    data = ab_planet_grids,
+    fill = "transparent"
+  )
+```
+
+```{r}
+# st_write(
+#   ab_planet_grids,
+#   "./data/arctic_boreal_planet_basemap_grids.geojson"
+# )
+```
+
